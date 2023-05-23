@@ -6,15 +6,48 @@
 
 %{
     #include <stdio.h>
+	#include <string.h>
     int lineno = 1;
-    void token_print(char *token_type);
+	int cif=0;
+	int celse=0;
+	int cfor=0;
+	int cdo=0;
+	int cwhile=0;
+	int ccase=0;
+	int cswitch=0;
+	int cbreak=0;
+	int cswap=0;
+	int cprintf=0;
+	int cfprintf=0;
+	int cscanf=0;
+	int cfopen=0;
+	int cfclose=0;
+	int complexfactor=0;
 
+    void token_print(char *token_type);
+	void incif();
+	void incfor();
+	void counterprint();
+	void incelse();
+	void incwhile();
+	void incdo();
+	void inccase();
+	void incswitch();
+	void incbreak();
+	void incswap();
+	void incprintf();
+	void incfprintf();
+	void incscanf();
+	void incfopen();
+	void incfclose();
+	void complexprint();
+	
 %}
 
 nzdigit[1-9]
 digit(0|{nzdigit})
 digits {digit}+
-optFr (\.{digits})?
+optFr (\.{digits})? 
 optExp ((E|e)(\+|-)?{digits})?
 number ({nzdigit}{digits}*|0){optFr}{optExp}
 letter [A-Za-z]
@@ -29,6 +62,7 @@ id {letter}({letter}|{digit})*
 "using" 					{token_print("T_USING");}
 "namespace" 				{token_print("T_NAMESPACE");}
 "std" 						{token_print("T_STD");}
+
 
 "float"                     {token_print("T_FLOAT");}
 "long"                      {token_print("T_LONG");}
@@ -50,7 +84,10 @@ id {letter}({letter}|{digit})*
 "void" 					    {token_print("T_VOID");}
 "swap" 					    {token_print("T_SWAP");}
 
+"fopen" 					{token_print("T_FOPEN");}
+"fclose" 					{token_print("T_FCLOSE");}
 "printf" 					{token_print("T_PRINTF");}
+"fprintf" 					{token_print("T_FPRINTF");}
 "scanf" 					{token_print("T_SCANF");}
 "printArray" 				{token_print("T_PRINTARRAY");}
 "return" 					{token_print("T_RETURN");}
@@ -64,6 +101,7 @@ id {letter}({letter}|{digit})*
 "enum" 					    {token_print("T_ENUM");}
 "extern" 					{token_print("T_EXTERN");}
 "register" 					{token_print("T_REGISTER");}
+"ctrcmp"                    {token_print("T_STRING_COMP");}
 
 "signed"					{token_print("T_SIGNED");}
 "static" 					{token_print("T_STATIC");}
@@ -111,10 +149,11 @@ id {letter}({letter}|{digit})*
 "\\n"						{token_print("T_NEWLINE");}
 
 [/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]    	/*Comment Pollaplwn Seirwn*/
-"//".* 					/* Comment mias seiras */
+"//".* 					    /* Comment mias seiras */
 [/][*]  					{token_print("T_UNTERMINATEDCOMMENT");} 
 [ \n\t\r]+ 					/* Kena */
 
+{float}                     {token_print("T_FLOAT_NUMBER");}
 {digit} 				 	{token_print("T_DIGIT"); }  
 {id} 					    {token_print("T_IDENTIFIER");}
 . 						    {printf( "T_UNRECOGNIZEDCHAR: %s\n", yytext);}
@@ -124,15 +163,167 @@ void token_print(char *token_type)
 {
 
 	fprintf(yyout,"%s\t%s, L:%d\n", yytext, token_type, yylineno);
+
+	if (strcmp(token_type,"T_IF")==0){
+		incif();
+	}
+	if (strcmp(token_type,"T_FOR")==0){
+		incfor();
+	}
+	if (strcmp(token_type,"T_ELSE")==0){
+		incelse();
+	}
+	if (strcmp(token_type,"T_DO")==0){
+		incdo();
+	}
+	if (strcmp(token_type,"T_WHILE")==0){
+		incwhile();
+	}
+	if (strcmp(token_type,"T_CASE")==0){
+		inccase();
+	}
+	if (strcmp(token_type,"T_SWITCH")==0){
+		incswitch();
+	}
+	if (strcmp(token_type,"T_BREAK")==0){
+		incbreak();
+	}
+	if (strcmp(token_type,"T_SWAP")==0){
+		incswap();
+	}
+	if (strcmp(token_type,"T_PRINTF")==0){
+		incprintf();
+	}
+	if (strcmp(token_type,"T_FPRINTF")==0){
+		incfprintf();
+	}
+	if (strcmp(token_type,"T_SCANF")==0){
+		incscanf();
+	}
+	if (strcmp(token_type,"T_FOPEN")==0){
+		incfopen();
+	}
+	if (strcmp(token_type,"T_FCLOSE")==0){
+		incfclose();
+	}
+
 }
 int main(int argc,char *argv[])
 {
 	yyin= fopen(argv[1], "r");
 	yyout= fopen("test_pantazisdidos4601.txt","w");
 	yylex();
+	counterprint();
+	complexprint();
 	fclose(yyin);
 	fclose(yyout);
 	return 0;
+}
+
+void counterprint(){
+
+	fprintf(yyout,"Count if =%d\n",cif);
+	fprintf(yyout,"Count for =%d\n",cfor);
+	fprintf(yyout,"Count else =%d\n",celse);
+	fprintf(yyout,"Count do =%d\n",cdo);
+	fprintf(yyout,"Count while =%d\n",cwhile);
+	fprintf(yyout,"Count case =%d\n",ccase);
+	fprintf(yyout,"Count switch =%d\n",cswitch);
+	fprintf(yyout,"Count break =%d\n",cbreak);
+	fprintf(yyout,"Count printf =%d\n",cprintf);
+	fprintf(yyout,"Count fprintf=%d\n",cfprintf);
+	fprintf(yyout,"Count scanf=%d\n",cscanf);
+	fprintf(yyout,"Count fopen=%d\n",cfopen);
+	fprintf(yyout,"Count fclose=%d\n",cfclose);
+
+}
+
+void incif (){
+	cif=cif+1;
+}
+
+void incfor (){
+	cfor=cfor+1;
+}
+
+void incelse (){
+	celse=celse+1;
+}
+
+void incdo (){
+	cdo=cdo+1;
+}
+
+void incwhile (){
+	cwhile=cwhile+1;
+}
+
+void inccase (){
+	ccase=ccase+1;
+}
+
+void incswitch (){
+	cswitch=cswitch+1;
+}
+
+void incbreak(){
+	cbreak=cbreak+1;
+}
+
+void incswap(){
+	cswap=cswap+1;
+};
+
+void incprintf(){
+	cprintf=cprintf+1;
+};
+
+void incfprintf(){
+	cfprintf=cfprintf+1;
+};
+
+void incscanf(){
+	cscanf=cscanf+1;
+};
+
+void incfopen(){
+	cfopen=cfopen+1;
+};
+
+void incfclose(){
+	cfclose=cfclose+1;
+};
+
+void complexprint(){
+
+	complexfactor=cif*2;
+	complexfactor=complexfactor+celse*3;
+	complexfactor=complexfactor+cfor*4;
+	complexfactor=complexfactor+cdo*4;
+	complexfactor=complexfactor+cwhile*5;
+	complexfactor=complexfactor+ccase*3;
+	complexfactor=complexfactor+cswitch*3;
+	complexfactor=complexfactor+cbreak*2;
+	complexfactor=complexfactor+cprintf*2;
+	complexfactor=complexfactor+cfprintf*3;
+	complexfactor=complexfactor+cscanf*3;
+
+	if (complexfactor<=60){
+		fprintf(yyout,"The code has a complex factor of %d so its a basic programm in C\n",complexfactor);
+	}else if (complexfactor<=180){
+		fprintf(yyout,"The code has a complex factor of %d so its moderate advanced programm in C\n",complexfactor);
+	}else if (complexfactor<=300){
+		fprintf(yyout,"The code has a complex factor of %d so its highly moderate advanced programm in C\n",complexfactor);
+	}else if (complexfactor<=500){
+		fprintf(yyout,"The code has a complex factor of %d so its advanced programm in C\n",complexfactor);
+	}else{
+		fprintf(yyout,"The code has a complex factor of %d so its highly advanced programm in C very complex\n",complexfactor);
+	}
+
+	if (cfopen!=cfclose){
+		fprintf(yyout,"One or more document did not closed in the programm. We suggest to close the file for safety.\n");
+	}
+
 }
 
 
