@@ -1,0 +1,20 @@
+void main(); 
+int cal();
+char proc();
+double perc();
+a=3;
+b=5;
+a=a+b;
+if(a<3){
+	for (i = 0 ; i < 20; ++i)
+	{
+	  scanf("Kalispera");
+	}
+}
+else{
+	while(i < 15)
+	{
+	  fopen("test");
+	 }
+	 
+}

@@ -1,0 +1,1411 @@
+Terminals unused in grammar
+
+    T_THEN
+    T_FPRINTF
+    T_COMMA
+
+
+State 11 conflicts: 1 shift/reduce
+State 16 conflicts: 2 shift/reduce
+State 27 conflicts: 8 shift/reduce
+State 34 conflicts: 7 shift/reduce
+State 37 conflicts: 2 shift/reduce
+State 50 conflicts: 7 shift/reduce
+
+
+Grammar
+
+    0 $accept: program T_EOF
+
+    1 program: expr
+
+    2 expr: function
+    3     | if_else
+    4     | digit
+    5     | identifier
+    6     | insert
+    7     | expr expr
+
+    8 digit: T_DIGIT
+    9      | digit digit
+   10      | digit operator digit
+
+   11 operator: T_PLUS
+   12         | T_MINUS
+   13         | T_DIV
+   14         | T_MULTIPLY
+   15         | T_MOD
+   16         | T_INCREMENT
+
+   17 boolean: T_LESS
+   18        | T_GREATER
+   19        | T_ASSIGN
+
+   20 identifier: T_IDENTIFIER
+
+   21 insert: T_IDENTIFIER T_ASSIGN digit T_SEMICOLON
+   22       | T_IDENTIFIER T_ASSIGN T_IDENTIFIER operator T_IDENTIFIER T_SEMICOLON
+
+   23 function: T_INT identifier T_LPAREN T_RPAREN T_SEMICOLON
+   24         | T_VOID identifier T_LPAREN T_RPAREN T_SEMICOLON
+   25         | T_DOUBLE identifier T_LPAREN T_RPAREN T_SEMICOLON
+   26         | T_CHAR identifier T_LPAREN T_RPAREN T_SEMICOLON
+
+   27 if_statement: T_IF T_LPAREN identifier boolean digit T_RPAREN
+   28             | if_statement T_LBRACE loop T_RBRACE
+
+   29 if_else: if_statement
+   30        | else_statement
+   31        | if_else if_else
+
+   32 else_statement: T_ELSE T_LBRACE loop T_RBRACE
+
+   33 loop: for_loop
+   34     | while_loop
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+   36         | for_loop T_LBRACE scan T_RBRACE
+   37         | for_loop T_LBRACE file T_RBRACE
+
+   38 while_loop: T_WHILE T_LPAREN identifier boolean digit T_RPAREN
+   39           | while_loop T_LBRACE print T_INCREMENT identifier T_SEMICOLON T_RBRACE
+   40           | while_loop T_LBRACE file T_RBRACE
+
+   41 print: T_PRINTF T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+   42 scan: T_SCANF T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+   43 file: open
+   44     | close
+
+   45 open: T_FOPEN T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+   46 close: T_FCLOSE T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+
+Terminals, with rules where they appear
+
+    T_EOF (0) 0
+    error (256)
+    T_DIGIT <intval> (258) 8
+    T_IDENTIFIER <strval> (259) 20 21 22
+    T_IF (260) 27
+    T_THEN (261)
+    T_ELSE (262) 32
+    T_WHILE (263) 38
+    T_FOR (264) 35
+    T_PRINTF (265) 41
+    T_FPRINTF (266)
+    T_FOPEN (267) 45
+    T_FCLOSE (268) 46
+    T_SCANF (269) 42
+    T_VOID (270) 24
+    T_INT (271) 23
+    T_DOUBLE (272) 25
+    T_CHAR (273) 26
+    T_RBRACE (274) 28 32 36 37 39 40
+    T_LBRACE (275) 28 32 36 37 39 40
+    T_LPAREN (276) 23 24 25 26 27 35 38 41 42 45 46
+    T_RPAREN (277) 23 24 25 26 27 35 38 41 42 45 46
+    T_LESS (278) 17
+    T_GREATER (279) 18
+    T_SEMICOLON (280) 21 22 23 24 25 26 35 39 41 42 45 46
+    T_COMMA (281)
+    T_PLUS (282) 11
+    T_MINUS (283) 12
+    T_MULTIPLY (284) 14
+    T_DIV (285) 13
+    T_MOD (286) 15
+    T_ASSIGN (287) 19 21 22
+    T_INCREMENT (288) 16 35 39
+    T_QMARK (289) 41 42 45 46
+
+
+Nonterminals, with rules where they appear
+
+    $accept (35)
+        on left: 0
+    program (36)
+        on left: 1
+        on right: 0
+    expr (37)
+        on left: 2 3 4 5 6 7
+        on right: 1 7
+    digit (38)
+        on left: 8 9 10
+        on right: 4 9 10 21 27 35 38
+    operator (39)
+        on left: 11 12 13 14 15 16
+        on right: 10 22
+    boolean (40)
+        on left: 17 18 19
+        on right: 27 35 38
+    identifier (41)
+        on left: 20
+        on right: 5 23 24 25 26 27 35 38 39 41 42 45 46
+    insert (42)
+        on left: 21 22
+        on right: 6
+    function (43)
+        on left: 23 24 25 26
+        on right: 2
+    if_statement (44)
+        on left: 27 28
+        on right: 28 29
+    if_else (45)
+        on left: 29 30 31
+        on right: 3 31
+    else_statement (46)
+        on left: 32
+        on right: 30
+    loop (47)
+        on left: 33 34
+        on right: 28 32
+    for_loop (48)
+        on left: 35 36 37
+        on right: 33 36 37
+    while_loop (49)
+        on left: 38 39 40
+        on right: 34 39 40
+    print (50)
+        on left: 41
+        on right: 39
+    scan (51)
+        on left: 42
+        on right: 36
+    file (52)
+        on left: 43 44
+        on right: 37 40
+    open (53)
+        on left: 45
+        on right: 43
+    close (54)
+        on left: 46
+        on right: 44
+
+
+State 0
+
+    0 $accept: • program T_EOF
+
+    T_DIGIT       shift, and go to state 1
+    T_IDENTIFIER  shift, and go to state 2
+    T_IF          shift, and go to state 3
+    T_ELSE        shift, and go to state 4
+    T_VOID        shift, and go to state 5
+    T_INT         shift, and go to state 6
+    T_DOUBLE      shift, and go to state 7
+    T_CHAR        shift, and go to state 8
+
+    program         go to state 9
+    expr            go to state 10
+    digit           go to state 11
+    identifier      go to state 12
+    insert          go to state 13
+    function        go to state 14
+    if_statement    go to state 15
+    if_else         go to state 16
+    else_statement  go to state 17
+
+
+State 1
+
+    8 digit: T_DIGIT •
+
+    $default  reduce using rule 8 (digit)
+
+
+State 2
+
+   20 identifier: T_IDENTIFIER •
+   21 insert: T_IDENTIFIER • T_ASSIGN digit T_SEMICOLON
+   22       | T_IDENTIFIER • T_ASSIGN T_IDENTIFIER operator T_IDENTIFIER T_SEMICOLON
+
+    T_ASSIGN  shift, and go to state 18
+
+    $default  reduce using rule 20 (identifier)
+
+
+State 3
+
+   27 if_statement: T_IF • T_LPAREN identifier boolean digit T_RPAREN
+
+    T_LPAREN  shift, and go to state 19
+
+
+State 4
+
+   32 else_statement: T_ELSE • T_LBRACE loop T_RBRACE
+
+    T_LBRACE  shift, and go to state 20
+
+
+State 5
+
+   24 function: T_VOID • identifier T_LPAREN T_RPAREN T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 22
+
+
+State 6
+
+   23 function: T_INT • identifier T_LPAREN T_RPAREN T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 23
+
+
+State 7
+
+   25 function: T_DOUBLE • identifier T_LPAREN T_RPAREN T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 24
+
+
+State 8
+
+   26 function: T_CHAR • identifier T_LPAREN T_RPAREN T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 25
+
+
+State 9
+
+    0 $accept: program • T_EOF
+
+    T_EOF  shift, and go to state 26
+
+
+State 10
+
+    1 program: expr •
+    7 expr: expr • expr
+
+    T_DIGIT       shift, and go to state 1
+    T_IDENTIFIER  shift, and go to state 2
+    T_IF          shift, and go to state 3
+    T_ELSE        shift, and go to state 4
+    T_VOID        shift, and go to state 5
+    T_INT         shift, and go to state 6
+    T_DOUBLE      shift, and go to state 7
+    T_CHAR        shift, and go to state 8
+
+    $default  reduce using rule 1 (program)
+
+    expr            go to state 27
+    digit           go to state 11
+    identifier      go to state 12
+    insert          go to state 13
+    function        go to state 14
+    if_statement    go to state 15
+    if_else         go to state 16
+    else_statement  go to state 17
+
+
+State 11
+
+    4 expr: digit •
+    9 digit: digit • digit
+   10      | digit • operator digit
+
+    T_DIGIT      shift, and go to state 1
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    T_DIGIT   [reduce using rule 4 (expr)]
+    $default  reduce using rule 4 (expr)
+
+    digit     go to state 34
+    operator  go to state 35
+
+
+State 12
+
+    5 expr: identifier •
+
+    $default  reduce using rule 5 (expr)
+
+
+State 13
+
+    6 expr: insert •
+
+    $default  reduce using rule 6 (expr)
+
+
+State 14
+
+    2 expr: function •
+
+    $default  reduce using rule 2 (expr)
+
+
+State 15
+
+   28 if_statement: if_statement • T_LBRACE loop T_RBRACE
+   29 if_else: if_statement •
+
+    T_LBRACE  shift, and go to state 36
+
+    $default  reduce using rule 29 (if_else)
+
+
+State 16
+
+    3 expr: if_else •
+   31 if_else: if_else • if_else
+
+    T_IF    shift, and go to state 3
+    T_ELSE  shift, and go to state 4
+
+    T_IF      [reduce using rule 3 (expr)]
+    T_ELSE    [reduce using rule 3 (expr)]
+    $default  reduce using rule 3 (expr)
+
+    if_statement    go to state 15
+    if_else         go to state 37
+    else_statement  go to state 17
+
+
+State 17
+
+   30 if_else: else_statement •
+
+    $default  reduce using rule 30 (if_else)
+
+
+State 18
+
+   21 insert: T_IDENTIFIER T_ASSIGN • digit T_SEMICOLON
+   22       | T_IDENTIFIER T_ASSIGN • T_IDENTIFIER operator T_IDENTIFIER T_SEMICOLON
+
+    T_DIGIT       shift, and go to state 1
+    T_IDENTIFIER  shift, and go to state 38
+
+    digit  go to state 39
+
+
+State 19
+
+   27 if_statement: T_IF T_LPAREN • identifier boolean digit T_RPAREN
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 40
+
+
+State 20
+
+   32 else_statement: T_ELSE T_LBRACE • loop T_RBRACE
+
+    T_WHILE  shift, and go to state 41
+    T_FOR    shift, and go to state 42
+
+    loop        go to state 43
+    for_loop    go to state 44
+    while_loop  go to state 45
+
+
+State 21
+
+   20 identifier: T_IDENTIFIER •
+
+    $default  reduce using rule 20 (identifier)
+
+
+State 22
+
+   24 function: T_VOID identifier • T_LPAREN T_RPAREN T_SEMICOLON
+
+    T_LPAREN  shift, and go to state 46
+
+
+State 23
+
+   23 function: T_INT identifier • T_LPAREN T_RPAREN T_SEMICOLON
+
+    T_LPAREN  shift, and go to state 47
+
+
+State 24
+
+   25 function: T_DOUBLE identifier • T_LPAREN T_RPAREN T_SEMICOLON
+
+    T_LPAREN  shift, and go to state 48
+
+
+State 25
+
+   26 function: T_CHAR identifier • T_LPAREN T_RPAREN T_SEMICOLON
+
+    T_LPAREN  shift, and go to state 49
+
+
+State 26
+
+    0 $accept: program T_EOF •
+
+    $default  accept
+
+
+State 27
+
+    7 expr: expr • expr
+    7     | expr expr •
+
+    T_DIGIT       shift, and go to state 1
+    T_IDENTIFIER  shift, and go to state 2
+    T_IF          shift, and go to state 3
+    T_ELSE        shift, and go to state 4
+    T_VOID        shift, and go to state 5
+    T_INT         shift, and go to state 6
+    T_DOUBLE      shift, and go to state 7
+    T_CHAR        shift, and go to state 8
+
+    T_DIGIT       [reduce using rule 7 (expr)]
+    T_IDENTIFIER  [reduce using rule 7 (expr)]
+    T_IF          [reduce using rule 7 (expr)]
+    T_ELSE        [reduce using rule 7 (expr)]
+    T_VOID        [reduce using rule 7 (expr)]
+    T_INT         [reduce using rule 7 (expr)]
+    T_DOUBLE      [reduce using rule 7 (expr)]
+    T_CHAR        [reduce using rule 7 (expr)]
+    $default      reduce using rule 7 (expr)
+
+    expr            go to state 27
+    digit           go to state 11
+    identifier      go to state 12
+    insert          go to state 13
+    function        go to state 14
+    if_statement    go to state 15
+    if_else         go to state 16
+    else_statement  go to state 17
+
+
+State 28
+
+   11 operator: T_PLUS •
+
+    $default  reduce using rule 11 (operator)
+
+
+State 29
+
+   12 operator: T_MINUS •
+
+    $default  reduce using rule 12 (operator)
+
+
+State 30
+
+   14 operator: T_MULTIPLY •
+
+    $default  reduce using rule 14 (operator)
+
+
+State 31
+
+   13 operator: T_DIV •
+
+    $default  reduce using rule 13 (operator)
+
+
+State 32
+
+   15 operator: T_MOD •
+
+    $default  reduce using rule 15 (operator)
+
+
+State 33
+
+   16 operator: T_INCREMENT •
+
+    $default  reduce using rule 16 (operator)
+
+
+State 34
+
+    9 digit: digit • digit
+    9      | digit digit •
+   10      | digit • operator digit
+
+    T_DIGIT      shift, and go to state 1
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    T_DIGIT      [reduce using rule 9 (digit)]
+    T_PLUS       [reduce using rule 9 (digit)]
+    T_MINUS      [reduce using rule 9 (digit)]
+    T_MULTIPLY   [reduce using rule 9 (digit)]
+    T_DIV        [reduce using rule 9 (digit)]
+    T_MOD        [reduce using rule 9 (digit)]
+    T_INCREMENT  [reduce using rule 9 (digit)]
+    $default     reduce using rule 9 (digit)
+
+    digit     go to state 34
+    operator  go to state 35
+
+
+State 35
+
+   10 digit: digit operator • digit
+
+    T_DIGIT  shift, and go to state 1
+
+    digit  go to state 50
+
+
+State 36
+
+   28 if_statement: if_statement T_LBRACE • loop T_RBRACE
+
+    T_WHILE  shift, and go to state 41
+    T_FOR    shift, and go to state 42
+
+    loop        go to state 51
+    for_loop    go to state 44
+    while_loop  go to state 45
+
+
+State 37
+
+   31 if_else: if_else • if_else
+   31        | if_else if_else •
+
+    T_IF    shift, and go to state 3
+    T_ELSE  shift, and go to state 4
+
+    T_IF      [reduce using rule 31 (if_else)]
+    T_ELSE    [reduce using rule 31 (if_else)]
+    $default  reduce using rule 31 (if_else)
+
+    if_statement    go to state 15
+    if_else         go to state 37
+    else_statement  go to state 17
+
+
+State 38
+
+   22 insert: T_IDENTIFIER T_ASSIGN T_IDENTIFIER • operator T_IDENTIFIER T_SEMICOLON
+
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    operator  go to state 52
+
+
+State 39
+
+    9 digit: digit • digit
+   10      | digit • operator digit
+   21 insert: T_IDENTIFIER T_ASSIGN digit • T_SEMICOLON
+
+    T_DIGIT      shift, and go to state 1
+    T_SEMICOLON  shift, and go to state 53
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    digit     go to state 34
+    operator  go to state 35
+
+
+State 40
+
+   27 if_statement: T_IF T_LPAREN identifier • boolean digit T_RPAREN
+
+    T_LESS     shift, and go to state 54
+    T_GREATER  shift, and go to state 55
+    T_ASSIGN   shift, and go to state 56
+
+    boolean  go to state 57
+
+
+State 41
+
+   38 while_loop: T_WHILE • T_LPAREN identifier boolean digit T_RPAREN
+
+    T_LPAREN  shift, and go to state 58
+
+
+State 42
+
+   35 for_loop: T_FOR • T_LPAREN identifier boolean digit T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_LPAREN  shift, and go to state 59
+
+
+State 43
+
+   32 else_statement: T_ELSE T_LBRACE loop • T_RBRACE
+
+    T_RBRACE  shift, and go to state 60
+
+
+State 44
+
+   33 loop: for_loop •
+   36 for_loop: for_loop • T_LBRACE scan T_RBRACE
+   37         | for_loop • T_LBRACE file T_RBRACE
+
+    T_LBRACE  shift, and go to state 61
+
+    $default  reduce using rule 33 (loop)
+
+
+State 45
+
+   34 loop: while_loop •
+   39 while_loop: while_loop • T_LBRACE print T_INCREMENT identifier T_SEMICOLON T_RBRACE
+   40           | while_loop • T_LBRACE file T_RBRACE
+
+    T_LBRACE  shift, and go to state 62
+
+    $default  reduce using rule 34 (loop)
+
+
+State 46
+
+   24 function: T_VOID identifier T_LPAREN • T_RPAREN T_SEMICOLON
+
+    T_RPAREN  shift, and go to state 63
+
+
+State 47
+
+   23 function: T_INT identifier T_LPAREN • T_RPAREN T_SEMICOLON
+
+    T_RPAREN  shift, and go to state 64
+
+
+State 48
+
+   25 function: T_DOUBLE identifier T_LPAREN • T_RPAREN T_SEMICOLON
+
+    T_RPAREN  shift, and go to state 65
+
+
+State 49
+
+   26 function: T_CHAR identifier T_LPAREN • T_RPAREN T_SEMICOLON
+
+    T_RPAREN  shift, and go to state 66
+
+
+State 50
+
+    9 digit: digit • digit
+   10      | digit • operator digit
+   10      | digit operator digit •
+
+    T_DIGIT      shift, and go to state 1
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    T_DIGIT      [reduce using rule 10 (digit)]
+    T_PLUS       [reduce using rule 10 (digit)]
+    T_MINUS      [reduce using rule 10 (digit)]
+    T_MULTIPLY   [reduce using rule 10 (digit)]
+    T_DIV        [reduce using rule 10 (digit)]
+    T_MOD        [reduce using rule 10 (digit)]
+    T_INCREMENT  [reduce using rule 10 (digit)]
+    $default     reduce using rule 10 (digit)
+
+    digit     go to state 34
+    operator  go to state 35
+
+
+State 51
+
+   28 if_statement: if_statement T_LBRACE loop • T_RBRACE
+
+    T_RBRACE  shift, and go to state 67
+
+
+State 52
+
+   22 insert: T_IDENTIFIER T_ASSIGN T_IDENTIFIER operator • T_IDENTIFIER T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 68
+
+
+State 53
+
+   21 insert: T_IDENTIFIER T_ASSIGN digit T_SEMICOLON •
+
+    $default  reduce using rule 21 (insert)
+
+
+State 54
+
+   17 boolean: T_LESS •
+
+    $default  reduce using rule 17 (boolean)
+
+
+State 55
+
+   18 boolean: T_GREATER •
+
+    $default  reduce using rule 18 (boolean)
+
+
+State 56
+
+   19 boolean: T_ASSIGN •
+
+    $default  reduce using rule 19 (boolean)
+
+
+State 57
+
+   27 if_statement: T_IF T_LPAREN identifier boolean • digit T_RPAREN
+
+    T_DIGIT  shift, and go to state 1
+
+    digit  go to state 69
+
+
+State 58
+
+   38 while_loop: T_WHILE T_LPAREN • identifier boolean digit T_RPAREN
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 70
+
+
+State 59
+
+   35 for_loop: T_FOR T_LPAREN • identifier boolean digit T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 71
+
+
+State 60
+
+   32 else_statement: T_ELSE T_LBRACE loop T_RBRACE •
+
+    $default  reduce using rule 32 (else_statement)
+
+
+State 61
+
+   36 for_loop: for_loop T_LBRACE • scan T_RBRACE
+   37         | for_loop T_LBRACE • file T_RBRACE
+
+    T_FOPEN   shift, and go to state 72
+    T_FCLOSE  shift, and go to state 73
+    T_SCANF   shift, and go to state 74
+
+    scan   go to state 75
+    file   go to state 76
+    open   go to state 77
+    close  go to state 78
+
+
+State 62
+
+   39 while_loop: while_loop T_LBRACE • print T_INCREMENT identifier T_SEMICOLON T_RBRACE
+   40           | while_loop T_LBRACE • file T_RBRACE
+
+    T_PRINTF  shift, and go to state 79
+    T_FOPEN   shift, and go to state 72
+    T_FCLOSE  shift, and go to state 73
+
+    print  go to state 80
+    file   go to state 81
+    open   go to state 77
+    close  go to state 78
+
+
+State 63
+
+   24 function: T_VOID identifier T_LPAREN T_RPAREN • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 82
+
+
+State 64
+
+   23 function: T_INT identifier T_LPAREN T_RPAREN • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 83
+
+
+State 65
+
+   25 function: T_DOUBLE identifier T_LPAREN T_RPAREN • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 84
+
+
+State 66
+
+   26 function: T_CHAR identifier T_LPAREN T_RPAREN • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 85
+
+
+State 67
+
+   28 if_statement: if_statement T_LBRACE loop T_RBRACE •
+
+    $default  reduce using rule 28 (if_statement)
+
+
+State 68
+
+   22 insert: T_IDENTIFIER T_ASSIGN T_IDENTIFIER operator T_IDENTIFIER • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 86
+
+
+State 69
+
+    9 digit: digit • digit
+   10      | digit • operator digit
+   27 if_statement: T_IF T_LPAREN identifier boolean digit • T_RPAREN
+
+    T_DIGIT      shift, and go to state 1
+    T_RPAREN     shift, and go to state 87
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    digit     go to state 34
+    operator  go to state 35
+
+
+State 70
+
+   38 while_loop: T_WHILE T_LPAREN identifier • boolean digit T_RPAREN
+
+    T_LESS     shift, and go to state 54
+    T_GREATER  shift, and go to state 55
+    T_ASSIGN   shift, and go to state 56
+
+    boolean  go to state 88
+
+
+State 71
+
+   35 for_loop: T_FOR T_LPAREN identifier • boolean digit T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_LESS     shift, and go to state 54
+    T_GREATER  shift, and go to state 55
+    T_ASSIGN   shift, and go to state 56
+
+    boolean  go to state 89
+
+
+State 72
+
+   45 open: T_FOPEN • T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_LPAREN  shift, and go to state 90
+
+
+State 73
+
+   46 close: T_FCLOSE • T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_LPAREN  shift, and go to state 91
+
+
+State 74
+
+   42 scan: T_SCANF • T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_LPAREN  shift, and go to state 92
+
+
+State 75
+
+   36 for_loop: for_loop T_LBRACE scan • T_RBRACE
+
+    T_RBRACE  shift, and go to state 93
+
+
+State 76
+
+   37 for_loop: for_loop T_LBRACE file • T_RBRACE
+
+    T_RBRACE  shift, and go to state 94
+
+
+State 77
+
+   43 file: open •
+
+    $default  reduce using rule 43 (file)
+
+
+State 78
+
+   44 file: close •
+
+    $default  reduce using rule 44 (file)
+
+
+State 79
+
+   41 print: T_PRINTF • T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_LPAREN  shift, and go to state 95
+
+
+State 80
+
+   39 while_loop: while_loop T_LBRACE print • T_INCREMENT identifier T_SEMICOLON T_RBRACE
+
+    T_INCREMENT  shift, and go to state 96
+
+
+State 81
+
+   40 while_loop: while_loop T_LBRACE file • T_RBRACE
+
+    T_RBRACE  shift, and go to state 97
+
+
+State 82
+
+   24 function: T_VOID identifier T_LPAREN T_RPAREN T_SEMICOLON •
+
+    $default  reduce using rule 24 (function)
+
+
+State 83
+
+   23 function: T_INT identifier T_LPAREN T_RPAREN T_SEMICOLON •
+
+    $default  reduce using rule 23 (function)
+
+
+State 84
+
+   25 function: T_DOUBLE identifier T_LPAREN T_RPAREN T_SEMICOLON •
+
+    $default  reduce using rule 25 (function)
+
+
+State 85
+
+   26 function: T_CHAR identifier T_LPAREN T_RPAREN T_SEMICOLON •
+
+    $default  reduce using rule 26 (function)
+
+
+State 86
+
+   22 insert: T_IDENTIFIER T_ASSIGN T_IDENTIFIER operator T_IDENTIFIER T_SEMICOLON •
+
+    $default  reduce using rule 22 (insert)
+
+
+State 87
+
+   27 if_statement: T_IF T_LPAREN identifier boolean digit T_RPAREN •
+
+    $default  reduce using rule 27 (if_statement)
+
+
+State 88
+
+   38 while_loop: T_WHILE T_LPAREN identifier boolean • digit T_RPAREN
+
+    T_DIGIT  shift, and go to state 1
+
+    digit  go to state 98
+
+
+State 89
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean • digit T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_DIGIT  shift, and go to state 1
+
+    digit  go to state 99
+
+
+State 90
+
+   45 open: T_FOPEN T_LPAREN • T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_QMARK  shift, and go to state 100
+
+
+State 91
+
+   46 close: T_FCLOSE T_LPAREN • T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_QMARK  shift, and go to state 101
+
+
+State 92
+
+   42 scan: T_SCANF T_LPAREN • T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_QMARK  shift, and go to state 102
+
+
+State 93
+
+   36 for_loop: for_loop T_LBRACE scan T_RBRACE •
+
+    $default  reduce using rule 36 (for_loop)
+
+
+State 94
+
+   37 for_loop: for_loop T_LBRACE file T_RBRACE •
+
+    $default  reduce using rule 37 (for_loop)
+
+
+State 95
+
+   41 print: T_PRINTF T_LPAREN • T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_QMARK  shift, and go to state 103
+
+
+State 96
+
+   39 while_loop: while_loop T_LBRACE print T_INCREMENT • identifier T_SEMICOLON T_RBRACE
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 104
+
+
+State 97
+
+   40 while_loop: while_loop T_LBRACE file T_RBRACE •
+
+    $default  reduce using rule 40 (while_loop)
+
+
+State 98
+
+    9 digit: digit • digit
+   10      | digit • operator digit
+   38 while_loop: T_WHILE T_LPAREN identifier boolean digit • T_RPAREN
+
+    T_DIGIT      shift, and go to state 1
+    T_RPAREN     shift, and go to state 105
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    digit     go to state 34
+    operator  go to state 35
+
+
+State 99
+
+    9 digit: digit • digit
+   10      | digit • operator digit
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit • T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_DIGIT      shift, and go to state 1
+    T_SEMICOLON  shift, and go to state 106
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    digit     go to state 34
+    operator  go to state 35
+
+
+State 100
+
+   45 open: T_FOPEN T_LPAREN T_QMARK • identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 107
+
+
+State 101
+
+   46 close: T_FCLOSE T_LPAREN T_QMARK • identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 108
+
+
+State 102
+
+   42 scan: T_SCANF T_LPAREN T_QMARK • identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 109
+
+
+State 103
+
+   41 print: T_PRINTF T_LPAREN T_QMARK • identifier T_QMARK T_RPAREN T_SEMICOLON
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 110
+
+
+State 104
+
+   39 while_loop: while_loop T_LBRACE print T_INCREMENT identifier • T_SEMICOLON T_RBRACE
+
+    T_SEMICOLON  shift, and go to state 111
+
+
+State 105
+
+   38 while_loop: T_WHILE T_LPAREN identifier boolean digit T_RPAREN •
+
+    $default  reduce using rule 38 (while_loop)
+
+
+State 106
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON • identifier boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 112
+
+
+State 107
+
+   45 open: T_FOPEN T_LPAREN T_QMARK identifier • T_QMARK T_RPAREN T_SEMICOLON
+
+    T_QMARK  shift, and go to state 113
+
+
+State 108
+
+   46 close: T_FCLOSE T_LPAREN T_QMARK identifier • T_QMARK T_RPAREN T_SEMICOLON
+
+    T_QMARK  shift, and go to state 114
+
+
+State 109
+
+   42 scan: T_SCANF T_LPAREN T_QMARK identifier • T_QMARK T_RPAREN T_SEMICOLON
+
+    T_QMARK  shift, and go to state 115
+
+
+State 110
+
+   41 print: T_PRINTF T_LPAREN T_QMARK identifier • T_QMARK T_RPAREN T_SEMICOLON
+
+    T_QMARK  shift, and go to state 116
+
+
+State 111
+
+   39 while_loop: while_loop T_LBRACE print T_INCREMENT identifier T_SEMICOLON • T_RBRACE
+
+    T_RBRACE  shift, and go to state 117
+
+
+State 112
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON identifier • boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_LESS     shift, and go to state 54
+    T_GREATER  shift, and go to state 55
+    T_ASSIGN   shift, and go to state 56
+
+    boolean  go to state 118
+
+
+State 113
+
+   45 open: T_FOPEN T_LPAREN T_QMARK identifier T_QMARK • T_RPAREN T_SEMICOLON
+
+    T_RPAREN  shift, and go to state 119
+
+
+State 114
+
+   46 close: T_FCLOSE T_LPAREN T_QMARK identifier T_QMARK • T_RPAREN T_SEMICOLON
+
+    T_RPAREN  shift, and go to state 120
+
+
+State 115
+
+   42 scan: T_SCANF T_LPAREN T_QMARK identifier T_QMARK • T_RPAREN T_SEMICOLON
+
+    T_RPAREN  shift, and go to state 121
+
+
+State 116
+
+   41 print: T_PRINTF T_LPAREN T_QMARK identifier T_QMARK • T_RPAREN T_SEMICOLON
+
+    T_RPAREN  shift, and go to state 122
+
+
+State 117
+
+   39 while_loop: while_loop T_LBRACE print T_INCREMENT identifier T_SEMICOLON T_RBRACE •
+
+    $default  reduce using rule 39 (while_loop)
+
+
+State 118
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON identifier boolean • digit T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_DIGIT  shift, and go to state 1
+
+    digit  go to state 123
+
+
+State 119
+
+   45 open: T_FOPEN T_LPAREN T_QMARK identifier T_QMARK T_RPAREN • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 124
+
+
+State 120
+
+   46 close: T_FCLOSE T_LPAREN T_QMARK identifier T_QMARK T_RPAREN • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 125
+
+
+State 121
+
+   42 scan: T_SCANF T_LPAREN T_QMARK identifier T_QMARK T_RPAREN • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 126
+
+
+State 122
+
+   41 print: T_PRINTF T_LPAREN T_QMARK identifier T_QMARK T_RPAREN • T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 127
+
+
+State 123
+
+    9 digit: digit • digit
+   10      | digit • operator digit
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON identifier boolean digit • T_SEMICOLON T_INCREMENT identifier T_RPAREN
+
+    T_DIGIT      shift, and go to state 1
+    T_SEMICOLON  shift, and go to state 128
+    T_PLUS       shift, and go to state 28
+    T_MINUS      shift, and go to state 29
+    T_MULTIPLY   shift, and go to state 30
+    T_DIV        shift, and go to state 31
+    T_MOD        shift, and go to state 32
+    T_INCREMENT  shift, and go to state 33
+
+    digit     go to state 34
+    operator  go to state 35
+
+
+State 124
+
+   45 open: T_FOPEN T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON •
+
+    $default  reduce using rule 45 (open)
+
+
+State 125
+
+   46 close: T_FCLOSE T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON •
+
+    $default  reduce using rule 46 (close)
+
+
+State 126
+
+   42 scan: T_SCANF T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON •
+
+    $default  reduce using rule 42 (scan)
+
+
+State 127
+
+   41 print: T_PRINTF T_LPAREN T_QMARK identifier T_QMARK T_RPAREN T_SEMICOLON •
+
+    $default  reduce using rule 41 (print)
+
+
+State 128
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON identifier boolean digit T_SEMICOLON • T_INCREMENT identifier T_RPAREN
+
+    T_INCREMENT  shift, and go to state 129
+
+
+State 129
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT • identifier T_RPAREN
+
+    T_IDENTIFIER  shift, and go to state 21
+
+    identifier  go to state 130
+
+
+State 130
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT identifier • T_RPAREN
+
+    T_RPAREN  shift, and go to state 131
+
+
+State 131
+
+   35 for_loop: T_FOR T_LPAREN identifier boolean digit T_SEMICOLON identifier boolean digit T_SEMICOLON T_INCREMENT identifier T_RPAREN •
+
+    $default  reduce using rule 35 (for_loop)
